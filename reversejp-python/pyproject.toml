@@ -1,6 +1,6 @@
 [project]
 name = "reversejp"
-description = "ReverseJP Python Binding"
+description = "Japan Geo Reverse Lookup"
 requires-python = ">=3.9"
 dynamic = ["version"]
 dependencies = []

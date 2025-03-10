@@ -9,7 +9,7 @@ in, including code, name, and English name.
 ### Rust
 
 ```bash
-# Coming soon
+cargo add reversejp
 ```
 
 ```rust
@@ -34,7 +34,7 @@ Code: 1310100, Name: 千代田区, English Name: Chiyoda City
 ### Python
 
 ```bash
-# Coming soon
+pip install reversejp
 ```
 
 ```py
