@@ -1,0 +1,116 @@
+name: Build&Release Python
+
+on:
+  push:
+    branches:
+      - main
+    tags:
+      - "*.*.*"
+  pull_request:
+    branches:
+      - main
+  release:
+    types:
+      - published
+
+defaults:
+  run:
+    working-directory: reversejp-python
+
+jobs:
+  linux:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: messense/maturin-action@v1
+        with:
+          manylinux: auto
+          command: build
+          args: --release -o dist -i 3.11 3.12 3.13
+          working-directory: reversejp-python
+          sccache: true
+      - name: Upload wheels
+        uses: actions/upload-artifact@v4
+        with:
+          name: wheels-linux
+          path: reversejp-python/dist
+
+  macos:
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - uses: messense/maturin-action@v1
+        with:
+          command: build
+          args: --release -o dist --target universal2-apple-darwin -i 3.11 3.12 3.13
+          working-directory: reversejp-python
+          sccache: true
+      - name: Upload wheels
+        uses: actions/upload-artifact@v4
+        with:
+          name: wheels-macos
+          path: reversejp-python/dist
+
+  windows:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - uses: messense/maturin-action@v1
+        with:
+          command: build
+          args: --release -o dist -i 3.11 3.12 3.13
+          working-directory: reversejp-python
+          sccache: true
+      - name: Upload wheels
+        uses: actions/upload-artifact@v4
+        with:
+          name: wheels-windows
+          path: reversejp-python/dist
+
+  sdist:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Build sdist
+        uses: PyO3/maturin-action@v1
+        with:
+          command: sdist
+          args: --out dist
+          working-directory: reversejp-python
+      - name: Upload sdist
+        uses: actions/upload-artifact@v4
+        with:
+          name: wheels-sdist
+          path: reversejp-python/dist
+
+  release:
+    name: Release
+    runs-on: ubuntu-latest
+    environment: release
+    permissions:
+      id-token: write
+    needs: [macos, linux, windows, sdist]
+    steps:
+      - uses: actions/download-artifact@v4
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Publish to PyPI
+        uses: messense/maturin-action@v1
+        if: github.event_name == 'release' && github.event.action == 'published'
+        with:
+          command: upload
+          args: --skip-existing wheels-*/*
