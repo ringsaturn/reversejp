@@ -13,15 +13,8 @@ members = ["reversejp-python"]
 dev = [
     "requests==2.32.3",
     "ruff==0.9.10",
-    "citiespy==0.6.8",
-    "ipython==9.0.2",
-    "maturin==1.8.2",
-    "pytest==8.3.5",
-    "pytest-benchmark==5.1.0",
-    "pytest-cov==6.0.0",
     "reversejp",
 ]
-
 
 [tool.uv.sources]
 reversejp = { workspace = true }

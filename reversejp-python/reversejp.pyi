@@ -1,4 +1,4 @@
-from typing import Dict, List
+from typing import List
 
 class Property:
     """A class representing a property (region)."""
@@ -24,19 +24,5 @@ def find_properties(longitude: float, latitude: float) -> List[Property]:
 
     Returns:
         A list of Property objects representing regions that contain the specified point
-    """
-    ...
-
-def find_properties_as_dict(longitude: float, latitude: float) -> Dict[str, Property]:
-    """
-    Find all properties (regions) that contain the specified longitude/latitude coordinate,
-    returned as a dictionary.
-
-    Args:
-        longitude: The longitude coordinate
-        latitude: The latitude coordinate
-
-    Returns:
-        A dictionary with region codes as keys and Property objects as values
     """
     ...

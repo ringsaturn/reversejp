@@ -2,4 +2,4 @@ build:
 	uv build
 
 test:
-	pytest tests/
+	uv run pytest tests/

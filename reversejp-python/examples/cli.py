@@ -20,7 +20,6 @@ def main():
     args = parser.parse_args()
 
     # Find all properties for Tokyo
-    print(reversejp.find_properties_as_dict(args.longitude, args.latitude))
     properties = reversejp.find_properties(args.longitude, args.latitude)
 
     print(f"Found {len(properties)} regions for {args.longitude}, {args.latitude}:")

@@ -308,12 +308,6 @@ source = { virtual = "." }
 
 [package.dev-dependencies]
 dev = [
-    { name = "citiespy" },
-    { name = "ipython" },
-    { name = "maturin" },
-    { name = "pytest" },
-    { name = "pytest-benchmark" },
-    { name = "pytest-cov" },
     { name = "requests" },
     { name = "reversejp" },
     { name = "ruff" },
@@ -323,12 +317,6 @@ dev = [
 
 [package.metadata.requires-dev]
 dev = [
-    { name = "citiespy", specifier = "==0.6.8" },
-    { name = "ipython", specifier = "==9.0.2" },
-    { name = "maturin", specifier = "==1.8.2" },
-    { name = "pytest", specifier = "==8.3.5" },
-    { name = "pytest-benchmark", specifier = "==5.1.0" },
-    { name = "pytest-cov", specifier = "==6.0.0" },
     { name = "requests", specifier = "==2.32.3" },
     { name = "reversejp", editable = "reversejp-python" },
     { name = "ruff", specifier = "==0.9.10" },
@@ -441,6 +429,30 @@ wheels = [
 [[package]]
 name = "reversejp"
 source = { editable = "reversejp-python" }
+
+[package.dev-dependencies]
+dev = [
+    { name = "citiespy" },
+    { name = "ipython" },
+    { name = "maturin" },
+    { name = "pytest" },
+    { name = "pytest-benchmark" },
+    { name = "pytest-cov" },
+    { name = "ruff" },
+]
+
+[package.metadata]
+
+[package.metadata.requires-dev]
+dev = [
+    { name = "citiespy", specifier = "==0.6.8" },
+    { name = "ipython", specifier = "==9.0.2" },
+    { name = "maturin", specifier = "==1.8.2" },
+    { name = "pytest", specifier = "==8.3.5" },
+    { name = "pytest-benchmark", specifier = "==5.1.0" },
+    { name = "pytest-cov", specifier = "==6.0.0" },
+    { name = "ruff", specifier = "==0.9.10" },
+]
 
 [[package]]
 name = "ruff"

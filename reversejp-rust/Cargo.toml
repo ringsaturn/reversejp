@@ -5,6 +5,9 @@ edition = "2021"
 license = "MIT"
 authors = ["ringsaturn <ringsaturn.me@gmail.com>"]
 description = "ReverseJP is a Rust library for reverse geocoding in Japan."
+homepage = "https://github.com/ringsaturn/reversejp"
+repository = "https://github.com/ringsaturn/reversejp"
+readme = "README.md"
 
 [dependencies]
 cities-json = "0.6.8"
