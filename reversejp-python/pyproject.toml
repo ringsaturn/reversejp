@@ -1,0 +1,21 @@
+[project]
+name = "reversejp"
+description = "ReverseJP Python Binding"
+requires-python = ">=3.9"
+dynamic = ["version"]
+dependencies = []
+readme = "README.md"
+
+[project.urls]
+Documentation = "https://github.com/ringsaturn/reversejp"
+"Source Code" = "https://github.com/ringsaturn/reversejp"
+
+[build-system]
+requires = ["maturin>=1.8.2"]
+build-backend = "maturin"
+
+[tool.maturin]
+profile = "release"
+bindings = "pyo3"
+cargo-extra-args = "--features python-extension"
+include = ["reversejp.pyi"]
