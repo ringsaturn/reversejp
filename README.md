@@ -1,3 +1,5 @@
+![](./artwork.webp)
+
 # Japan Geo Reverse Lookup
 
 A Rust library for reverse geocoding in Japan. Given a longitude and latitude,
