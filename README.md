@@ -1,4 +1,4 @@
-![](./assets/artwork.webp)
+![](./assets/artwork.svg)
 
 # Japan Geo Reverse Lookup
 
