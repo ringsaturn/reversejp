@@ -1,4 +1,4 @@
-![](./artwork.webp)
+![](./assets/artwork.webp)
 
 # Japan Geo Reverse Lookup
 
@@ -33,6 +33,10 @@ Code: 130010, Name: 東京都, English Name: Tokyo
 Code: 1310100, Name: 千代田区, English Name: Chiyoda City
 ```
 
+Performance benchmark(Under MacBook Pro with Apple M3 Max):
+
+![](./assets/pdf.svg)
+
 ### Python
 
 ```bash
@@ -54,6 +58,16 @@ Example output:
 ```text
 130010 東京都 Tokyo
 1310100 千代田区 Chiyoda City
+```
+
+Performance benchmark(Under MacBook Pro with Apple M3 Max):
+
+```text
+-------------------------------------------------- benchmark: 1 tests --------------------------------------------------
+Name (time in us)           Min       Max     Mean   StdDev   Median     IQR  Outliers  OPS (Kops/s)  Rounds  Iterations
+------------------------------------------------------------------------------------------------------------------------
+test_city_benchmark     11.2909  623.2501  13.9494  20.8232  12.5421  0.5411   91;3468       71.6877   21090           1
+------------------------------------------------------------------------------------------------------------------------
 ```
 
 ## License
