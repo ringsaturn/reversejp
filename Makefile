@@ -15,13 +15,13 @@ clean:
 lint:
 	cargo fmt --check
 	cargo clippy --fix --allow-dirty --allow-staged
-	ruff check
+	uv run ruff check
 
 fmt:
 	cargo fmt
-	ruff check
-	ruff format
-	ruff check --select I --fix .
+	uv run ruff check
+	uv run ruff format
+	uv run ruff check --select I --fix .
 
 cloc:
 	cloc `pwd` --exclude-dir=target,data,.venv
