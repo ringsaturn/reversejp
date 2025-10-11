@@ -1,7 +1,7 @@
 [package]
 name = "reversejp-python"
-version = "0.1.1"
-edition = "2021"
+version = "0.1.2"
+edition = "2024"
 license = "MIT"
 
 [lib]
@@ -10,4 +10,4 @@ crate-type = ["cdylib"]
 
 [dependencies]
 reversejp = { path = "../reversejp-rust" }  # Reference the parent project
-pyo3 = {version = "0.24.1", features = ["extension-module", "generate-import-lib", "abi3-py39"]}
+pyo3 = {version = "0.26.0", features = ["extension-module", "generate-import-lib", "abi3-py310"]}

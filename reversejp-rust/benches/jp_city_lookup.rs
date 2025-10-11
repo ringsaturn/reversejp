@@ -1,7 +1,8 @@
-use criterion::{black_box, criterion_group, criterion_main, BenchmarkId, Criterion};
+use criterion::{BenchmarkId, Criterion, criterion_group, criterion_main};
 use lazy_static::lazy_static;
 use rand::random_range;
 use reversejp::ReverseJp;
+use std::hint::black_box;
 
 // Initialize JP_CITIES only once for better performance
 lazy_static! {
