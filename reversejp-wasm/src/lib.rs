@@ -1,14 +1,13 @@
-use reversejp::ReverseJp;
 use js_sys::Error;
 use once_cell::sync::OnceCell;
+use reversejp::ReverseJp;
 use wasm_bindgen::prelude::*;
 
 static GLOBAL_REVERSE_JP: OnceCell<ReverseJp> = OnceCell::new();
 
 fn get_instance() -> Result<&'static ReverseJp, JsValue> {
     GLOBAL_REVERSE_JP.get_or_try_init(|| {
-        ReverseJp::with_embedded_data()
-            .map_err(|err| JsValue::from(Error::new(&err.to_string())))
+        ReverseJp::with_embedded_data().map_err(|err| JsValue::from(Error::new(&err.to_string())))
     })
 }
 
