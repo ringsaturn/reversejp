@@ -2,6 +2,8 @@
 name = "reversejp-wasm"
 version = "0.1.4"
 edition = "2024"
+repository = "https://github.com/ringsaturn/reversejp"
+license = "MIT"
 
 [lib]
 crate-type = ["cdylib", "rlib"]
