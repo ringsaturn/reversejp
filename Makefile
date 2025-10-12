@@ -10,8 +10,12 @@ test:
 clean:
 	cd reversejp-rust; cargo clean
 	cd reversejp-python; cargo clean
+	cd reversejp-wasm; cargo clean
 	rm -rf reversejp-python/dist
-	rm -rf dist
+	rm -rf reversejp-wasm/pkg
+	rm -rf reversejp-wasm/dist
+	rm -rf reversejp-wasm/example/node_modules
+	rm -rf .venv
 
 lint:
 	cargo fmt --check
