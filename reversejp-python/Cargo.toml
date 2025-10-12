@@ -3,6 +3,7 @@ name = "reversejp-python"
 version = "0.1.5"
 edition = "2024"
 license = "MIT"
+publish = false
 
 [lib]
 name = "reversejp"

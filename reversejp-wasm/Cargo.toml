@@ -4,6 +4,7 @@ version = "0.1.5"
 edition = "2024"
 repository = "https://github.com/ringsaturn/reversejp"
 license = "MIT"
+publish = false
 
 [lib]
 crate-type = ["cdylib", "rlib"]
