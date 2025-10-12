@@ -1,0 +1,154 @@
+name: Preview and publish
+
+on:
+  push:
+    branches: ["main"]
+    tags: ["v*"]
+  pull_request:
+    paths:
+      - "reversejp-wasm/**"
+      - ".github/workflows/release-wasm.yml"
+  workflow_dispatch:
+
+env:
+  CARGO_TERM_COLOR: always
+
+defaults:
+  run:
+    working-directory: reversejp-wasm
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - name: Check out sources
+        uses: actions/checkout@v5
+
+      - name: Set up Rust toolchain
+        uses: actions-rust-lang/setup-rust-toolchain@v1
+        with:
+          toolchain: stable
+
+      - name: Set up wasm-pack
+        uses: jetli/wasm-pack-action@v0.4.0
+        with:
+          version: latest
+
+      - name: Build shared artifacts
+        run: |
+          make build
+          rm -rf dist
+          mkdir dist
+          cp -r pkg dist/pkg
+
+      - name: Upload build artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: wasm-dist
+          path: reversejp-wasm/dist
+          if-no-files-found: error
+
+  preview:
+    needs: build
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deploy.outputs.page_url }}
+    steps:
+      - name: Check out sources
+        uses: actions/checkout@v5
+
+      - name: Download build artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: wasm-dist
+          path: dist
+
+      - name: Configure GitHub Pages
+        uses: actions/configure-pages@v4
+
+      - name: Upload preview artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: dist
+
+      - name: Deploy preview
+        id: deploy
+        uses: actions/deploy-pages@v4
+
+  publish_npm:
+    needs: build
+    if: startsWith(github.ref, 'refs/tags/v')
+    runs-on: ubuntu-latest
+    permissions:
+      id-token: write
+      contents: read
+    steps:
+      - name: Check out sources
+        uses: actions/checkout@v5
+
+      - name: Download build artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: wasm-dist
+          path: dist
+
+      - name: Verify tag matches package version
+        run: |
+          PKG_VERSION=$(jq -r '.version' dist/pkg/package.json)
+          TAG_VERSION=${GITHUB_REF_NAME#v}
+          if [ "$PKG_VERSION" != "$TAG_VERSION" ]; then
+            echo "Package version ${PKG_VERSION} does not match tag ${GITHUB_REF_NAME}." >&2
+            exit 1
+          fi
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          registry-url: https://registry.npmjs.org
+
+      - name: Update npm
+        run: npm install -g npm@latest
+
+      - name: Publish to npm
+        working-directory: dist/pkg
+        run: npm publish --access public
+
+  upload-to-release:
+    runs-on: ubuntu-latest
+    needs: publish_npm
+    if: ${{ startsWith(github.ref, 'refs/tags/') }}
+    permissions:
+      contents: write
+    steps:
+      - name: Download build artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: wasm-dist
+          path: dist
+
+      - name: Package release archive
+        id: package
+        run: |
+          ARCHIVE_NAME=tzf-wasm-${GITHUB_REF_NAME}.zip
+          cd dist
+          zip -r "../${ARCHIVE_NAME}" .
+          cd ..
+          echo "archive=${ARCHIVE_NAME}" >> "$GITHUB_OUTPUT"
+
+      - name: Create GitHub Release and Upload Assets
+        uses: softprops/action-gh-release@v2
+        if: startsWith(github.ref, 'refs/tags/')
+        with:
+          files: |
+            dist/**
+            ${{ steps.package.outputs.archive }}
+          generate_release_notes: true

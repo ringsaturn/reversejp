@@ -1,0 +1,265 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+	<meta charset="utf-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1" />
+	<title>ReverseJP – Browser Preview</title>
+	<style>
+		:root {
+			color-scheme: light dark;
+			font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+			background: #111827;
+			color: #e5e7eb;
+		}
+
+		body {
+			margin: 0;
+			min-height: 100vh;
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			padding: 3rem 1.5rem;
+			background: radial-gradient(circle at top, rgba(129, 140, 248, 0.15), transparent 55%), #0f172a;
+		}
+
+		.card {
+			width: min(720px, 100%);
+			background: rgba(15, 23, 42, 0.8);
+			border: 1px solid rgba(148, 163, 184, 0.25);
+			border-radius: 18px;
+			backdrop-filter: blur(12px);
+			padding: 2rem;
+			box-shadow: 0 25px 45px rgba(15, 23, 42, 0.35);
+		}
+
+		h1 {
+			margin: 0 0 0.5rem;
+			font-size: clamp(1.8rem, 3vw, 2.3rem);
+			font-weight: 700;
+			letter-spacing: -0.02em;
+			color: #f8fafc;
+		}
+
+		p {
+			margin: 0 0 1.5rem;
+			color: rgba(226, 232, 240, 0.75);
+			line-height: 1.6;
+		}
+
+		form {
+			display: grid;
+			gap: 1rem;
+			grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+			margin-bottom: 1.5rem;
+		}
+
+		label {
+			display: flex;
+			flex-direction: column;
+			gap: 0.4rem;
+			font-size: 0.9rem;
+			color: rgba(226, 232, 240, 0.85);
+		}
+
+		input {
+			appearance: none;
+			border: 1px solid rgba(148, 163, 184, 0.3);
+			border-radius: 12px;
+			padding: 0.65rem 0.8rem;
+			font-size: 1rem;
+			background: rgba(15, 23, 42, 0.9);
+			color: inherit;
+			transition: border 0.2s ease, box-shadow 0.2s ease;
+		}
+
+		input:focus {
+			outline: none;
+			border-color: rgba(129, 140, 248, 0.8);
+			box-shadow: 0 0 0 3px rgba(129, 140, 248, 0.25);
+		}
+
+		button {
+			grid-column: 1 / -1;
+			padding: 0.75rem 1.25rem;
+			font-size: 1rem;
+			font-weight: 600;
+			border-radius: 12px;
+			border: none;
+			cursor: pointer;
+			background: linear-gradient(120deg, #6366f1, #8b5cf6);
+			color: #f8fafc;
+			box-shadow: 0 12px 24px rgba(99, 102, 241, 0.35);
+			transition: transform 0.15s ease, box-shadow 0.15s ease;
+		}
+
+		button:active {
+			transform: translateY(1px);
+			box-shadow: 0 8px 18px rgba(99, 102, 241, 0.25);
+		}
+
+		.status {
+			font-size: 0.9rem;
+			margin-bottom: 1rem;
+			display: flex;
+			align-items: center;
+			gap: 0.5rem;
+		}
+
+		.indicator {
+			width: 10px;
+			height: 10px;
+			border-radius: 50%;
+			background: #f97316;
+			box-shadow: 0 0 12px rgba(249, 115, 22, 0.5);
+			transition: background 0.2s ease, box-shadow 0.2s ease;
+		}
+
+		.indicator.ready {
+			background: #22c55e;
+			box-shadow: 0 0 12px rgba(34, 197, 94, 0.5);
+		}
+
+		.results {
+			border-radius: 16px;
+			background: rgba(15, 23, 42, 0.6);
+			border: 1px solid rgba(148, 163, 184, 0.15);
+			padding: 1.25rem;
+			min-height: 120px;
+			display: grid;
+			gap: 0.75rem;
+			font-size: 0.95rem;
+			line-height: 1.5;
+		}
+
+		.result-card {
+			padding: 1rem;
+			border-radius: 12px;
+			background: rgba(30, 41, 59, 0.85);
+			border: 1px solid rgba(148, 163, 184, 0.2);
+			display: grid;
+			gap: 0.35rem;
+		}
+
+		.code {
+			font-family: "JetBrains Mono", "Fira Code", ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+			font-size: 0.9rem;
+			letter-spacing: 0.04em;
+			color: #a5b4fc;
+		}
+
+		.alert {
+			padding: 1rem 1.25rem;
+			border-radius: 12px;
+			border: 1px solid rgba(248, 113, 113, 0.35);
+			background: rgba(248, 113, 113, 0.12);
+			color: #fecaca;
+		}
+	</style>
+</head>
+
+<body>
+	<main class="card">
+		<h1>ReverseJP Playground</h1>
+		<p>
+			Try the <strong>reversejp</strong> WebAssembly build right in your browser.
+			Enter a longitude and latitude pair, and we&rsquo;ll return the matched Japanese
+			administrative regions from the embedded dataset.
+		</p>
+
+		<div class="status" id="status">
+			<span class="indicator" id="indicator" aria-hidden="true"></span>
+			<span id="status-text">Loading WebAssembly module…</span>
+		</div>
+
+		<form id="lookup-form">
+			<label>
+				Longitude (°E)
+				<input type="number" id="longitude" name="longitude" step="0.0001" value="139.7670"
+					placeholder="e.g. 139.7670" required />
+			</label>
+			<label>
+				Latitude (°N)
+				<input type="number" id="latitude" name="latitude" step="0.0001" value="35.6812"
+					placeholder="e.g. 35.6812" required />
+			</label>
+			<button type="submit">Lookup regions</button>
+		</form>
+
+		<section class="results" id="results" aria-live="polite">
+			<span>Results will appear here once the module is ready.</span>
+		</section>
+	</main>
+
+	<script type="module">
+		import init, { initialize, find_properties } from "../reversejp_wasm.js";
+
+		const statusText = document.getElementById("status-text");
+		const indicator = document.getElementById("indicator");
+		const form = document.getElementById("lookup-form");
+		const results = document.getElementById("results");
+
+		let ready = false;
+
+		const setStatus = (text, isReady = false) => {
+			statusText.textContent = text;
+			indicator.classList.toggle("ready", isReady);
+			ready = isReady;
+		};
+
+			const renderResults = (payload) => {
+				if (!Array.isArray(payload) || payload.length === 0) {
+				results.innerHTML = "<span>No matching regions found for these coordinates.</span>";
+				return;
+			}
+
+			const cards = payload.map((item) => `
+				<article class="result-card">
+					<div class="code">${item.code}</div>
+					<div>${item.name}</div>
+					<div style="opacity:0.75;">${item.enName || "(no English name)"}</div>
+				</article>
+			`);
+
+			results.innerHTML = cards.join("");
+		};
+
+		try {
+			await init();
+			await initialize();
+			setStatus("Module ready. Submit the form to search any coordinates.", true);
+			renderResults(find_properties(139.7670, 35.6812));
+		} catch (error) {
+			console.error("Failed to bootstrap reversejp wasm module", error);
+			setStatus("Failed to load module. Check the console for details.");
+			results.innerHTML = `<div class="alert">${error}</div>`;
+		}
+
+		form.addEventListener("submit", (event) => {
+			event.preventDefault();
+
+			if (!ready) {
+				results.innerHTML = "<div class=\"alert\">Module is not ready yet. Please wait.</div>";
+				return;
+			}
+
+			const longitude = Number(document.getElementById("longitude").value);
+			const latitude = Number(document.getElementById("latitude").value);
+
+			if (!Number.isFinite(longitude) || !Number.isFinite(latitude)) {
+				results.innerHTML = "<div class=\"alert\">Please enter valid numeric coordinates.</div>";
+				return;
+			}
+
+			try {
+						const response = find_properties(longitude, latitude);
+						renderResults(response);
+			} catch (error) {
+				console.error("Lookup failed", error);
+				results.innerHTML = `<div class="alert">${error}</div>`;
+			}
+		});
+	</script>
+</body>
+
+</html>

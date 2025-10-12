@@ -1,6 +1,7 @@
 build:
 	cd reversejp-rust; pwd; make build
 	(cd reversejp-python && uv build --out-dir ./dist)
+	(cd reversejp-wasm && make build)
 
 test:
 	cd reversejp-rust; make test
