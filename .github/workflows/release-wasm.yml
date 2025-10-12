@@ -139,7 +139,7 @@ jobs:
       - name: Package release archive
         id: package
         run: |
-          ARCHIVE_NAME=tzf-wasm-${GITHUB_REF_NAME}.zip
+          ARCHIVE_NAME=reversejp-wasm-${GITHUB_REF_NAME}.zip
           cd dist
           zip -r "../${ARCHIVE_NAME}" .
           cd ..
