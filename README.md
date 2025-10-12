@@ -8,7 +8,7 @@ in, including code, name, and English name.
 
 ## Installation
 
-### Rust
+### Rust [![Crates.io Version](https://img.shields.io/crates/v/reversejp)](https://crates.io/crates/reversejp)
 
 ```bash
 cargo add reversejp
@@ -37,7 +37,7 @@ Performance benchmark(Under MacBook Pro with Apple M3 Max):
 
 ![](./assets/pdf.svg)
 
-### Python
+### Python [![PyPI - Version](https://img.shields.io/pypi/v/reversejp)](https://pypi.org/project/reversejp/)
 
 ```bash
 pip install reversejp
@@ -70,15 +70,18 @@ test_city_benchmark     11.2909  623.2501  13.9494  20.8232  12.5421  0.5411   9
 ------------------------------------------------------------------------------------------------------------------------
 ```
 
-### WebAssembly
+### WebAssembly [![NPM Version](https://img.shields.io/npm/v/reversejp-wasm)](https://www.npmjs.com/package/reversejp-wasm)
+
 
 ```bash
+# Install via npm or any other package manager
 npm i reversejp-wasm
 ```
 
 The command above produces a `pkg/` directory containing the WebAssembly module and TypeScript bindings that can be published to npm or consumed directly.
 
 ```js
+// reversejp-wasm/example/index.ts
 import initWasm, { initialize, find_properties } from "reversejp-wasm";
 
 await initWasm();
