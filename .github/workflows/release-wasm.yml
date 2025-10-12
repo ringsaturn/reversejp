@@ -4,6 +4,10 @@ on:
   push:
     branches: ["main"]
     tags: ["v*"]
+  pull_request:
+    paths:
+      - "reversejp-wasm/**"
+      - ".github/workflows/release-wasm.yml"
   workflow_dispatch:
 
 env:
