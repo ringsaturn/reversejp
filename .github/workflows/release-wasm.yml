@@ -146,6 +146,7 @@ jobs:
         id: package
         working-directory: reversejp-wasm/dist
         run: |
+          cd reversejp-wasm;
           ARCHIVE_NAME=reversejp-wasm-${GITHUB_REF_NAME}.zip
           cd dist
           zip -r "../${ARCHIVE_NAME}" .
