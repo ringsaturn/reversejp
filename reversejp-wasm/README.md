@@ -22,4 +22,4 @@ const results = find_properties(139.7670, 35.6812);
 console.log(results);
 ```
 
-`find_properties` returns an array of objects with the same shape as the `Properties` struct in the Rust crate: `{ code, name, en_name }`.
+`find_properties` returns an array of objects with the same shape as the `Properties` struct in the Rust crate: `{ code, name, enName }`.
