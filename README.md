@@ -72,10 +72,8 @@ test_city_benchmark     11.2909  623.2501  13.9494  20.8232  12.5421  0.5411   9
 
 ### WebAssembly
 
-- [ ] add npm install.
-
 ```bash
-make build
+npm i reversejp-wasm
 ```
 
 The command above produces a `pkg/` directory containing the WebAssembly module and TypeScript bindings that can be published to npm or consumed directly.
@@ -86,11 +84,26 @@ import initWasm, { initialize, find_properties } from "reversejp-wasm";
 await initWasm();
 initialize();
 
+// `find_properties` returns an array of objects with the same shape as the `Properties` struct in the Rust crate: `{ code, name, enName }`.
 const results = find_properties(139.767, 35.6812);
 console.log(results);
 ```
 
-`find_properties` returns an array of objects with the same shape as the `Properties` struct in the Rust crate: `{ code, name, enName }`.
+Output:
+
+```js
+[
+  {
+    code: "130010",
+    name: "東京都",
+    enName: "Tokyo",
+  }, {
+    code: "1310100",
+    name: "千代田区",
+    enName: "Chiyoda City",
+  }
+]
+```
 
 ## License
 

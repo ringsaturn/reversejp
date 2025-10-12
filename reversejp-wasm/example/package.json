@@ -1,0 +1,15 @@
+{
+  "name": "reversejp-wasm-example",
+  "module": "index.ts",
+  "type": "module",
+  "private": true,
+  "devDependencies": {
+    "@types/bun": "latest"
+  },
+  "peerDependencies": {
+    "typescript": "^5"
+  },
+  "dependencies": {
+    "reversejp-wasm": "^0.1.5"
+  }
+}
