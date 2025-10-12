@@ -12,8 +12,9 @@ on:
     tags:
       - "*.*.*"
   pull_request:
-    branches:
-      - main
+    paths:
+      - "reversejp-python/**"
+      - ".github/workflows/release-python.yml"
   workflow_dispatch:
 
 permissions:
