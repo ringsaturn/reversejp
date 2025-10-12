@@ -86,7 +86,6 @@ jobs:
 
   publish_npm:
     needs: build
-    if: startsWith(github.ref, 'refs/tags/v')
     runs-on: ubuntu-latest
     permissions:
       id-token: write
@@ -99,10 +98,16 @@ jobs:
         uses: actions/download-artifact@v4
         with:
           name: wasm-dist
-          path: dist
+          path: reversejp-wasm/dist
+
+      - name: Check files
+        run: |
+          tree
 
       - name: Verify tag matches package version
         run: |
+          pwd
+          ls -l .
           PKG_VERSION=$(jq -r '.version' dist/pkg/package.json)
           TAG_VERSION=${GITHUB_REF_NAME#v}
           if [ "$PKG_VERSION" != "$TAG_VERSION" ]; then
@@ -111,17 +116,20 @@ jobs:
           fi
 
       - name: Set up Node.js
+        if: startsWith(github.ref, 'refs/tags/v')
         uses: actions/setup-node@v4
         with:
           node-version: 20
           registry-url: https://registry.npmjs.org
 
       - name: Update npm
+        if: startsWith(github.ref, 'refs/tags/v')
         run: npm install -g npm@latest
 
       - name: Publish to npm
         working-directory: dist/pkg
         run: npm publish --access public
+        if: startsWith(github.ref, 'refs/tags/v')
 
   upload-to-release:
     runs-on: ubuntu-latest
@@ -134,7 +142,7 @@ jobs:
         uses: actions/download-artifact@v4
         with:
           name: wasm-dist
-          path: dist
+          path: reversejp-wasm/dist
 
       - name: Package release archive
         id: package
