@@ -829,7 +829,7 @@ checksum = "c3160422bbd54dd5ecfdca71e5fd59b7b8fe2b1697ab2baf64f6d05dcc66d298"
 
 [[package]]
 name = "reversejp"
-version = "0.1.4"
+version = "0.1.5"
 dependencies = [
  "cities-json",
  "criterion",
@@ -843,7 +843,7 @@ dependencies = [
 
 [[package]]
 name = "reversejp-python"
-version = "0.1.4"
+version = "0.1.5"
 dependencies = [
  "pyo3",
  "reversejp",
@@ -851,7 +851,7 @@ dependencies = [
 
 [[package]]
 name = "reversejp-wasm"
-version = "0.1.4"
+version = "0.1.5"
 dependencies = [
  "console_error_panic_hook",
  "getrandom",
