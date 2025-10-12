@@ -126,7 +126,7 @@ jobs:
         run: npm install -g npm@latest
 
       - name: Publish to npm
-        working-directory: dist/pkg
+        working-directory: reversejp-wasm/dist/pkg
         run: npm publish --access public
 
   upload-to-release:
@@ -144,6 +144,7 @@ jobs:
 
       - name: Package release archive
         id: package
+        working-directory: reversejp-wasm/dist
         run: |
           ARCHIVE_NAME=reversejp-wasm-${GITHUB_REF_NAME}.zip
           cd dist
