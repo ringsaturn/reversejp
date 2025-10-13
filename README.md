@@ -70,43 +70,56 @@ test_city_benchmark     11.2909  623.2501  13.9494  20.8232  12.5421  0.5411   9
 ------------------------------------------------------------------------------------------------------------------------
 ```
 
-### WebAssembly [![NPM Version](https://img.shields.io/npm/v/reversejp-wasm)](https://www.npmjs.com/package/reversejp-wasm)
-
+### JavaScript&TypeScript via WebAssembly [![NPM Version](https://img.shields.io/npm/v/reversejp-wasm)](https://www.npmjs.com/package/reversejp-wasm)
 
 ```bash
-# Install via npm or any other package manager
-npm i reversejp-wasm
+# Install via bun or any other package manager
+bun add reversejp-wasm
 ```
 
-The command above produces a `pkg/` directory containing the WebAssembly module and TypeScript bindings that can be published to npm or consumed directly.
+The command above produces a `pkg/` directory containing the WebAssembly module
+and TypeScript bindings that can be published to npm or consumed directly.
 
 ```js
 // reversejp-wasm/example/index.ts
-import initWasm, { initialize, find_properties } from "reversejp-wasm";
+import init, { initialize, find_properties } from "../pkg/reversejp_wasm.js";
 
-await initWasm();
+await init();
 initialize();
 
-// `find_properties` returns an array of objects with the same shape as the `Properties` struct in the Rust crate: `{ code, name, enName }`.
+// `find_properties` returns an array of objects with the same shape as the
+// `Properties` struct in the Rust crate: `{ code, name, enName }`.
 const results = find_properties(139.767, 35.6812);
-console.log(results);
+console.log(JSON.stringify(results, null, 2));
+```
+
+Run via
+
+```bash
+bun run reversejp-wasm/example/index.ts
 ```
 
 Output:
 
-```js
+```console
 [
   {
-    code: "130010",
-    name: "東京都",
-    enName: "Tokyo",
-  }, {
-    code: "1310100",
-    name: "千代田区",
-    enName: "Chiyoda City",
+    "code": "130010",
+    "name": "東京都",
+    "enName": "Tokyo"
+  },
+  {
+    "code": "1310100",
+    "name": "千代田区",
+    "enName": "Chiyoda City"
   }
 ]
 ```
+
+For basic JavaScript usage, see
+[`reversejp-wasm/preview/index.html`](reversejp-wasm/preview/index.html) which
+online previewed at
+[https://ringsaturn.github.io/reversejp/](https://ringsaturn.github.io/reversejp/).
 
 ## License
 
