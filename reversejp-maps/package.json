@@ -10,7 +10,7 @@
     "typescript": "^5"
   },
   "dependencies": {
-    "reversejp-wasm": "^0.1.5",
+    "reversejp-wasm": "file:../reversejp-wasm/pkg",
     "maplibre-gl": "^4.7.1",
     "@protomaps/basemaps": "^5.0.0"
   },
