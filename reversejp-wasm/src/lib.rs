@@ -1,6 +1,7 @@
 use js_sys::Error;
 use once_cell::sync::OnceCell;
 use reversejp::ReverseJp;
+use reversejp::get_landslide_data;
 use wasm_bindgen::prelude::*;
 
 static GLOBAL_REVERSE_JP: OnceCell<ReverseJp> = OnceCell::new();
@@ -27,4 +28,14 @@ pub fn find_properties(longitude: f64, latitude: f64) -> Result<JsValue, JsValue
 
     serde_wasm_bindgen::to_value(&properties)
         .map_err(|err| JsValue::from(Error::new(&err.to_string())))
+}
+
+
+#[wasm_bindgen]
+pub fn get_landslide_data_wasm(idx: usize) -> Result<JsValue, JsValue> {
+    let result = get_landslide_data(idx);
+    match result {
+        Ok(data) => Ok(JsValue::from_str(&data)),
+        Err(err) => Err(JsValue::from(Error::new(&err.to_string()))),
+    }
 }

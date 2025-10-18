@@ -1,6 +1,10 @@
 import maplibregl from "maplibre-gl";
 import { layers, namedFlavor } from "@protomaps/basemaps";
-import init, { find_properties, initialize } from "reversejp-wasm";
+import init, {
+  find_properties,
+  get_landslide_data_wasm,
+  initialize,
+} from "reversejp-wasm";
 
 // Type definitions for the WASM module
 interface Property {
@@ -45,7 +49,7 @@ function initMap(): maplibregl.Map {
       version: 8,
       glyphs:
         "https://protomaps.github.io/basemaps-assets/fonts/{fontstack}/{range}.pbf",
-      sprite: "https://protomaps.github.io/basemaps-assets/sprites/v4/light",
+      sprite: "https://protomaps.github.io/basemaps-assets/sprites/v4/white",
       sources: {
         protomaps: {
           type: "vector",
@@ -57,7 +61,7 @@ function initMap(): maplibregl.Map {
             '<a href="https://protomaps.com">Protomaps</a> © <a href="https://openstreetmap.org">OpenStreetMap</a>',
         },
       },
-      layers: layers("protomaps", namedFlavor("light"), { lang: "ja" }),
+      layers: layers("protomaps", namedFlavor("white"), { lang: "ja" }),
     },
   });
 
@@ -66,6 +70,9 @@ function initMap(): maplibregl.Map {
 
   // Store markers
   const markers: maplibregl.Marker[] = [];
+
+  // Store the current map reference for external access
+  let mapInstance = map;
 
   // Handle map clicks
   map.on("click", async (e: maplibregl.MapMouseEvent) => {
@@ -106,6 +113,138 @@ function initMap(): maplibregl.Map {
   });
 
   return map;
+}
+
+// Load and display landslide GeoJSON data
+function loadLandslideData(
+  map: maplibregl.Map,
+  idx: number,
+  fitBounds: boolean = true,
+): void {
+  try {
+    // Get GeoJSON string from WASM
+    const geoJsonString = get_landslide_data_wasm(idx) as string;
+    const geoJsonData = JSON.parse(geoJsonString);
+
+    const sourceId = `landslide-source-${idx}`;
+    const layerId = `landslide-layer-${idx}`;
+    const outlineLayerId = `landslide-outline-${idx}`;
+
+    // Remove existing layers and source if they exist
+    if (map.getLayer(outlineLayerId)) {
+      map.removeLayer(outlineLayerId);
+    }
+    if (map.getLayer(layerId)) {
+      map.removeLayer(layerId);
+    }
+    if (map.getSource(sourceId)) {
+      map.removeSource(sourceId);
+    }
+
+    // Add the GeoJSON source
+    map.addSource(sourceId, {
+      type: "geojson",
+      data: geoJsonData,
+    });
+
+    // Use different colors for different indices
+    const colors = [
+      "#ff0000", // Red
+      "#ff6b00", // Orange-red
+      "#ff9500", // Orange
+      "#ffbb00", // Yellow-orange
+      "#ffd700", // Gold
+      "#00ff00", // Green
+      "#00bfff", // Sky blue
+      "#0080ff", // Blue
+      "#4169e1", // Royal blue
+      "#8b00ff", // Purple
+    ];
+
+    // Add a fill layer for polygons
+    map.addLayer({
+      id: layerId,
+      type: "fill",
+      source: sourceId,
+      paint: {
+        "fill-color": colors[idx] || "#ff0000",
+        "fill-opacity": 0.3,
+      },
+    });
+
+    // Add an outline layer
+    map.addLayer({
+      id: outlineLayerId,
+      type: "line",
+      source: sourceId,
+      paint: {
+        "line-color": colors[idx] || "#ff0000",
+        "line-width": 1.5,
+      },
+    });
+
+    // Fit map to the bounds of the GeoJSON data (only if requested)
+    if (fitBounds && geoJsonData.features && geoJsonData.features.length > 0) {
+      const bounds = new maplibregl.LngLatBounds();
+
+      geoJsonData.features.forEach((feature: any) => {
+        if (feature.geometry.type === "Polygon") {
+          feature.geometry.coordinates[0].forEach((coord: number[]) => {
+            bounds.extend(coord as [number, number]);
+          });
+        } else if (feature.geometry.type === "MultiPolygon") {
+          feature.geometry.coordinates.forEach((polygon: number[][][]) => {
+            if (polygon[0]) {
+              polygon[0].forEach((coord: number[]) => {
+                bounds.extend(coord as [number, number]);
+              });
+            }
+          });
+        }
+      });
+
+      map.fitBounds(bounds, { padding: 50 });
+    }
+
+    console.log(`✅ Loaded landslide data ${idx}`);
+  } catch (error) {
+    console.error(`❌ Failed to load landslide data ${idx}:`, error);
+    // Don't show alert for auto-load failures
+  }
+}
+
+// Load all landslide data automatically
+function loadAllLandslideData(map: maplibregl.Map): void {
+  console.log("🔄 Auto-loading all landslide data...");
+  for (let i = 0; i < 10; i++) {
+    try {
+      loadLandslideData(map, i, false); // Don't fit bounds for each layer
+    } catch (error) {
+      console.error(`Failed to auto-load landslide data ${i}:`, error);
+    }
+  }
+  console.log("✅ Finished auto-loading landslide data");
+}
+
+// Clear all landslide layers
+function clearLandslideLayers(map: maplibregl.Map): void {
+  // Remove layers 0-9 (adjust range if needed)
+  for (let i = 0; i < 10; i++) {
+    const sourceId = `landslide-source-${i}`;
+    const layerId = `landslide-layer-${i}`;
+    const outlineLayerId = `landslide-outline-${i}`;
+
+    if (map.getLayer(outlineLayerId)) {
+      map.removeLayer(outlineLayerId);
+    }
+    if (map.getLayer(layerId)) {
+      map.removeLayer(layerId);
+    }
+    if (map.getSource(sourceId)) {
+      map.removeSource(sourceId);
+    }
+  }
+  console.log("✅ Cleared all landslide layers");
 }
 
 // Display location information in the panel
@@ -217,9 +356,81 @@ function escapeHtml(text: string): string {
   return div.innerHTML;
 }
 
+// Setup landslide data controls
+function setupLandslideControls(map: maplibregl.Map): void {
+  const controlsContainer = document.getElementById("landslide-controls");
+  if (!controlsContainer) return;
+
+  // Create buttons for landslide data indices 0-9
+  for (let i = 0; i < 10; i++) {
+    const button = document.createElement("button");
+    button.textContent = `${i}`;
+    button.className = "landslide-btn";
+    button.title = `Toggle landslide data ${i}`;
+    button.addEventListener("click", () => {
+      if (!wasmInitialized) {
+        alert("Please wait, the system is still loading...");
+        return;
+      }
+
+      // Toggle layer visibility
+      const layerId = `landslide-layer-${i}`;
+      const outlineLayerId = `landslide-outline-${i}`;
+
+      if (map.getLayer(layerId)) {
+        const visibility = map.getLayoutProperty(layerId, "visibility");
+        const newVisibility = visibility === "visible" ? "none" : "visible";
+        map.setLayoutProperty(layerId, "visibility", newVisibility);
+        map.setLayoutProperty(outlineLayerId, "visibility", newVisibility);
+        button.classList.toggle("active", newVisibility === "visible");
+      } else {
+        loadLandslideData(map, i, true);
+        button.classList.add("active");
+      }
+    });
+    // Don't mark as active by default since layers aren't auto-loaded
+    controlsContainer.appendChild(button);
+  }
+
+  // Add a load all button
+  const loadAllButton = document.createElement("button");
+  loadAllButton.textContent = "Load All";
+  loadAllButton.className = "landslide-btn load-all-btn";
+  loadAllButton.addEventListener("click", () => {
+    if (!wasmInitialized) {
+      alert("Please wait, the system is still loading...");
+      return;
+    }
+    loadAllLandslideData(map);
+    // Set all buttons to active
+    controlsContainer.querySelectorAll(
+      ".landslide-btn:not(.clear-btn):not(.load-all-btn)",
+    ).forEach((btn) => {
+      btn.classList.add("active");
+    });
+  });
+  controlsContainer.appendChild(loadAllButton);
+
+  // Add a clear button
+  const clearButton = document.createElement("button");
+  clearButton.textContent = "Clear All";
+  clearButton.className = "landslide-btn clear-btn";
+  clearButton.addEventListener("click", () => {
+    clearLandslideLayers(map);
+    // Reset button states
+    controlsContainer.querySelectorAll(
+      ".landslide-btn:not(.clear-btn):not(.load-all-btn)",
+    ).forEach((btn) => {
+      btn.classList.remove("active");
+    });
+  });
+  controlsContainer.appendChild(clearButton);
+}
+
 // Initialize everything
 (async () => {
   await initWasm();
-  initMap();
+  const map = initMap();
   setupCloseButton();
+  setupLandslideControls(map);
 })();
