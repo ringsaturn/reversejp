@@ -16,6 +16,6 @@
   },
   "scripts": {
     "dev": "bun run --hot index.ts",
-    "build": "bun build src/app.ts --outdir public --target browser"
+    "build": "bun build src/app.ts --outdir public --target browser && cp node_modules/reversejp-wasm/reversejp_wasm_bg.wasm public/"
   }
 }

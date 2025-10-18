@@ -1,4 +1,4 @@
-import { file, serve, type ServeOptions } from "bun";
+import { file, serve} from "bun";
 import { build } from "bun";
 import { join } from "path";
 

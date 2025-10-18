@@ -3,14 +3,13 @@ import { layers, namedFlavor } from "@protomaps/basemaps";
 import init, { initialize, find_properties } from "reversejp-wasm";
 
 // Type definitions for the WASM module
-interface LocationProperties {
-  city?: string;
-  prefecture?: string;
-  area?: string;
-  warning?: string;
-  landslide_area?: string;
-  [key: string]: string | undefined;
+interface Property {
+  code: string;
+  name: string;
+  enName: string;
 }
+
+type LocationProperties = Property[];
 
 // Initialize the WASM module
 let wasmInitialized = false;
@@ -124,89 +123,32 @@ function displayInfo(
     `;
 
   // Display properties if available
-  if (properties && Object.keys(properties).length > 0) {
-    // City information
-    if (properties.city) {
+  if (properties && properties.length > 0) {
+    html += `
+            <div class="info-section">
+                <div class="info-label">Location Properties</div>
+            </div>
+        `;
+
+    // Display each property
+    properties.forEach((prop, index) => {
       html += `
                 <div class="info-section">
-                    <div class="info-label">City</div>
-                    <div class="info-value">${escapeHtml(properties.city)}</div>
+                    <div class="info-label">Region ${index + 1}</div>
+                    <div class="info-value">
+                        <strong>Name:</strong> ${escapeHtml(prop.name)}<br>
+                        ${
+                          prop.enName
+                            ? `<strong>English Name:</strong> ${escapeHtml(
+                                prop.enName
+                              )}<br>`
+                            : ""
+                        }
+                        <strong>Code:</strong> ${escapeHtml(prop.code)}
+                    </div>
                 </div>
             `;
-    }
-
-    // Prefecture information
-    if (properties.prefecture) {
-      html += `
-                <div class="info-section">
-                    <div class="info-label">Prefecture</div>
-                    <div class="info-value">${escapeHtml(
-                      properties.prefecture
-                    )}</div>
-                </div>
-            `;
-    }
-
-    // Area information
-    if (properties.area) {
-      html += `
-                <div class="info-section">
-                    <div class="info-label">Area</div>
-                    <div class="info-value">${escapeHtml(properties.area)}</div>
-                </div>
-            `;
-    }
-
-    // Warning information
-    if (properties.warning) {
-      html += `
-                <div class="info-section">
-                    <div class="info-label">Warning</div>
-                    <div class="info-value">${escapeHtml(
-                      properties.warning
-                    )}</div>
-                </div>
-            `;
-    }
-
-    // Landslide information
-    if (properties.landslide_area) {
-      html += `
-                <div class="info-section">
-                    <div class="info-label">Landslide Area</div>
-                    <div class="info-value">${escapeHtml(
-                      properties.landslide_area
-                    )}</div>
-                </div>
-            `;
-    }
-
-    // Display all other properties
-    const displayedKeys = [
-      "city",
-      "prefecture",
-      "area",
-      "warning",
-      "landslide_area",
-    ];
-    const otherProps = Object.entries(properties).filter(
-      ([key]) => !displayedKeys.includes(key)
-    );
-
-    if (otherProps.length > 0) {
-      html += `<div class="info-section">`;
-      otherProps.forEach(([key, value]) => {
-        if (value !== undefined) {
-          html += `
-                        <div class="info-label">${escapeHtml(key)}</div>
-                        <div class="info-value">${escapeHtml(
-                          String(value)
-                        )}</div>
-                    `;
-        }
-      });
-      html += `</div>`;
-    }
+    });
   } else {
     html += `
             <div class="info-section">
