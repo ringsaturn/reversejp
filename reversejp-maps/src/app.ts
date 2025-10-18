@@ -30,10 +30,17 @@ function initMap(): maplibregl.Map {
   const PROTOMAPS_API_KEY = "9bbd0c5d1011a6bd";
 
   // Create the map centered on Japan using Protomaps hosted API
+  // Japan's approximate bounding box: [west, south, east, north]
+  const japanBounds: maplibregl.LngLatBoundsLike = [
+    [122.0, 24.0], // Southwest coordinates (Yonaguni Island area)
+    [154.0, 46.0], // Northeast coordinates (Northern Hokkaido, Kuril area)
+  ];
+
   const map = new maplibregl.Map({
     container: "map",
     center: [139.767, 35.6812], // Tokyo coordinates
     zoom: 5,
+    maxBounds: japanBounds, // Restrict map to Japan's region
     style: {
       version: 8,
       glyphs:
