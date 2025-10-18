@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ReverseJP - Interactive Map with Geocoding</title>
+    <link rel="stylesheet" href="https://unpkg.com/maplibre-gl@4.7.1/dist/maplibre-gl.css">
+    <link rel="stylesheet" href="./styles.css">
+</head>
+<body>
+    <div id="map"></div>
+    
+    <div id="info-panel" class="info-panel hidden">
+        <button id="close-btn" class="close-btn">&times;</button>
+        <h2>Location Information</h2>
+        <div id="info-content"></div>
+    </div>
+
+    <div class="instructions">
+        <p>🗺️ Click anywhere on the map to get location information</p>
+    </div>
+
+    <script type="module" src="./app.js"></script>
+</body>
+</html>

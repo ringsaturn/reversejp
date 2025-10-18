@@ -66,11 +66,29 @@ jobs:
       - name: Check out sources
         uses: actions/checkout@v5
 
-      - name: Download build artifact
+      - name: Download WASM build artifact
         uses: actions/download-artifact@v4
         with:
           name: wasm-dist
-          path: dist
+          path: reversejp-wasm/dist
+
+      - name: Set up Bun
+        uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: latest
+
+      - name: Copy WASM package to expected location
+        run: |
+          mkdir -p reversejp-wasm/pkg
+          cp -r reversejp-wasm/dist/pkg/* reversejp-wasm/pkg/
+
+      - name: Install dependencies for maps
+        working-directory: reversejp-maps
+        run: bun install
+
+      - name: Build maps application
+        working-directory: reversejp-maps
+        run: bun run build
 
       - name: Configure GitHub Pages
         uses: actions/configure-pages@v4
@@ -78,7 +96,7 @@ jobs:
       - name: Upload preview artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          path: dist
+          path: reversejp-maps/public
 
       - name: Deploy preview
         id: deploy

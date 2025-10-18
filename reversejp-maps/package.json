@@ -1,0 +1,21 @@
+{
+  "name": "reversejp-wasm-example",
+  "module": "index.ts",
+  "type": "module",
+  "private": true,
+  "devDependencies": {
+    "@types/bun": "latest"
+  },
+  "peerDependencies": {
+    "typescript": "^5"
+  },
+  "dependencies": {
+    "reversejp-wasm": "file:../reversejp-wasm/pkg",
+    "maplibre-gl": "^4.7.1",
+    "@protomaps/basemaps": "^5.0.0"
+  },
+  "scripts": {
+    "dev": "bun run --hot index.ts",
+    "build": "bun build src/app.ts --outdir public --target browser && cp node_modules/reversejp-wasm/reversejp_wasm_bg.wasm public/"
+  }
+}
