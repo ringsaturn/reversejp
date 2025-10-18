@@ -1,6 +1,6 @@
 import maplibregl from "maplibre-gl";
 import { layers, namedFlavor } from "@protomaps/basemaps";
-import init, { initialize, find_properties } from "reversejp-wasm";
+import init, { find_properties, initialize } from "reversejp-wasm";
 
 // Type definitions for the WASM module
 interface Property {
@@ -112,7 +112,7 @@ function initMap(): maplibregl.Map {
 function displayInfo(
   lng: number,
   lat: number,
-  properties: LocationProperties
+  properties: LocationProperties,
 ): void {
   const infoPanel = document.getElementById("info-panel");
   const infoContent = document.getElementById("info-content");
@@ -145,12 +145,14 @@ function displayInfo(
                     <div class="info-value">
                         <strong>Name:</strong> ${escapeHtml(prop.name)}<br>
                         ${
-                          prop.enName
-                            ? `<strong>English Name:</strong> ${escapeHtml(
-                                prop.enName
-                              )}<br>`
-                            : ""
-                        }
+        prop.enName
+          ? `<strong>English Name:</strong> ${
+            escapeHtml(
+              prop.enName,
+            )
+          }<br>`
+          : ""
+      }
                         <strong>Code:</strong> ${escapeHtml(prop.code)}
                     </div>
                 </div>
@@ -184,9 +186,11 @@ function displayError(lng: number, lat: number, error: Error): void {
             </div>
         </div>
         <div class="info-section">
-            <div class="no-data">Error: ${escapeHtml(
-              error.message || String(error)
-            )}</div>
+            <div class="no-data">Error: ${
+    escapeHtml(
+      error.message || String(error),
+    )
+  }</div>
         </div>
     `;
 

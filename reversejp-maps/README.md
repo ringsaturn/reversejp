@@ -1,6 +1,7 @@
 # ReverseJP WASM Interactive Map Example
 
-An interactive web map application that demonstrates reverse geocoding in Japan using the ReverseJP WASM bindings with Protomaps and MapLibre GL JS.
+An interactive web map application that demonstrates reverse geocoding in Japan
+using the ReverseJP WASM bindings with Protomaps and MapLibre GL JS.
 
 ## Features
 
@@ -17,7 +18,8 @@ An interactive web map application that demonstrates reverse geocoding in Japan 
 
 ## Tech Stack
 
-- **[Protomaps](https://protomaps.com/)**: Hosted API for open source map tiles and basemaps
+- **[Protomaps](https://protomaps.com/)**: Hosted API for open source map tiles
+  and basemaps
 - **[MapLibre GL JS](https://maplibre.org/)**: Open source map rendering library
 - **ReverseJP WASM**: WebAssembly bindings for Japanese reverse geocoding
 - **[Bun](https://bun.sh/)**: Fast JavaScript runtime and dev server
@@ -74,20 +76,25 @@ http://localhost:3000
 ```
 
 The project uses TypeScript throughout:
+
 - `src/app.ts` contains the main application logic written in TypeScript
-- `index.ts` is a Bun server that automatically compiles TypeScript to JavaScript
+- `index.ts` is a Bun server that automatically compiles TypeScript to
+  JavaScript
 - When you run `bun run index.ts`, it builds `src/app.ts` → `public/app.js`
 - The built JavaScript is then served to the browser
 
 ## About Protomaps
 
 This example uses the Protomaps hosted API, which provides:
+
 - Vector map tiles served from a fast CDN
 - OpenStreetMap data updated daily
 - Multiple map styles and languages
 - Simple API key authentication
 - Free for non-commercial use
 
-For commercial use or self-hosting options, visit [protomaps.com](https://protomaps.com/).
+For commercial use or self-hosting options, visit
+[protomaps.com](https://protomaps.com/).
 
-This project was created using `bun init` in bun v1.2.22. [Bun](https://bun.com) is a fast all-in-one JavaScript runtime.
+This project was created using `bun init` in bun v1.2.22. [Bun](https://bun.com)
+is a fast all-in-one JavaScript runtime.
