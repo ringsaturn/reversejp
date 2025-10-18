@@ -42,7 +42,7 @@ pub fn get_class10s_data() -> Result<String, Box<dyn std::error::Error>> {
 
 // Helper function to get landslide data for a specific index
 pub fn get_landslide_data(idx: usize) -> Result<String, Box<dyn std::error::Error>> {
-    let zip_data = match idx {
+    let zip_data: &[u8] = match idx {
         0 => EMBEDDED_LANDSLIDES_0_DATA,
         1 => EMBEDDED_LANDSLIDES_1_DATA,
         2 => EMBEDDED_LANDSLIDES_2_DATA,
