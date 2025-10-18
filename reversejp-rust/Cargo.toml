@@ -1,13 +1,13 @@
 [package]
 name = "reversejp"
-version = "0.1.5"
-edition = "2024"
-license = "MIT"
-authors = ["ringsaturn <ringsaturn.me@gmail.com>"]
-description = "ReverseJP is a Rust library for reverse geocoding in Japan."
-homepage = "https://github.com/ringsaturn/reversejp"
-repository = "https://github.com/ringsaturn/reversejp"
-readme = "README.md"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+authors.workspace = true
+description.workspace = true
+homepage.workspace = true
+repository.workspace = true
+readme.workspace = true
 
 [dependencies]
 geometry-rs = "0.3.3"

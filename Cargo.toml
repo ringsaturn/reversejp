@@ -1,3 +1,13 @@
 [workspace]
 resolver = "3"
 members = ["reversejp-rust", "reversejp-python", "reversejp-wasm"]
+
+[workspace.package]
+version = "0.1.5"
+edition = "2024"
+license = "MIT"
+authors = ["ringsaturn <ringsaturn.me@gmail.com>"]
+description = "ReverseJP is a Rust library for reverse geocoding in Japan."
+homepage = "https://github.com/ringsaturn/reversejp"
+repository = "https://github.com/ringsaturn/reversejp"
+readme = "README.md"

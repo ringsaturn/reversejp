@@ -1,9 +1,16 @@
 [package]
 name = "reversejp-python"
-version = "0.1.5"
-edition = "2024"
-license = "MIT"
-publish = false
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+authors.workspace = true
+description.workspace = true
+homepage.workspace = true
+repository.workspace = true
+readme.workspace = true
+
+[package.metadata.release]
+release = false
 
 [lib]
 name = "reversejp"
