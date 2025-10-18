@@ -58,7 +58,7 @@ function initMap(): maplibregl.Map {
           ],
           maxzoom: 15,
           attribution:
-            '<a href="https://protomaps.com">Protomaps</a> © <a href="https://openstreetmap.org">OpenStreetMap</a>',
+            '<a href="https://protomaps.com">Protomaps</a> © <a href="https://openstreetmap.org">OpenStreetMap</a> | Data: <a href="https://www.jma.go.jp/">JMA</a>',
         },
       },
       layers: layers("protomaps", namedFlavor("white"), { lang: "ja" }),
