@@ -37,6 +37,7 @@ jobs:
           version: latest
 
       - name: Build shared artifacts
+        working-directory: reversejp-wasm
         run: |
           make build
           rm -rf dist
@@ -62,6 +63,9 @@ jobs:
     environment:
       name: github-pages
       url: ${{ steps.deploy.outputs.page_url }}
+    defaults:
+      run:
+        working-directory: /home/runner/work/reversejp/reversejp
     steps:
       - name: Check out sources
         uses: actions/checkout@v5
@@ -72,15 +76,17 @@ jobs:
           name: wasm-dist
           path: reversejp-wasm/dist
 
+      - name: Copy WASM package to expected location
+        run: |
+          pwd
+          tree reversejp-wasm
+          mkdir -p reversejp-wasm/pkg
+          cp -r reversejp-wasm/dist/pkg/* reversejp-wasm/pkg/
+
       - name: Set up Bun
         uses: oven-sh/setup-bun@v2
         with:
           bun-version: latest
-
-      - name: Copy WASM package to expected location
-        run: |
-          mkdir -p reversejp-wasm/pkg
-          cp -r reversejp-wasm/dist/pkg/* reversejp-wasm/pkg/
 
       - name: Install dependencies for maps
         working-directory: reversejp-maps
