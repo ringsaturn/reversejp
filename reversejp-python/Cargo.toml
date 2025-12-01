@@ -18,4 +18,4 @@ crate-type = ["cdylib"]
 
 [dependencies]
 reversejp = { path = "../reversejp-rust" }  # Reference the parent project
-pyo3 = {version = "0.27.1", features = ["extension-module", "generate-import-lib", "abi3-py310"]}
+pyo3 = {version = "0.27.2", features = ["extension-module", "generate-import-lib", "abi3-py310"]}
