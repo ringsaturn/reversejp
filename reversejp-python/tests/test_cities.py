@@ -2,7 +2,7 @@ import random
 
 from citiespy import all_cities
 from pytest import mark
-from reversejp import find_properties
+from reversejp import find_properties, get_landslide_data
 
 all_jp_cities = [city for city in all_cities() if city.country == "JP"]
 
@@ -49,3 +49,9 @@ def _test_city():
 
 def test_city_benchmark(benchmark):
     benchmark(_test_city)
+
+
+def test_load_landslide_data():
+    for idx in range(10):
+        data = get_landslide_data(idx)
+        assert isinstance(data, str)

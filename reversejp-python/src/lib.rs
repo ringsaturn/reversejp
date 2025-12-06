@@ -48,6 +48,16 @@ fn find_properties(_py: Python, longitude: f64, latitude: f64) -> PyResult<Vec<P
     Ok(result)
 }
 
+#[pyfunction]
+pub fn get_landslide_data(idx: usize) -> PyResult<String> {
+    match ::reversejp::get_landslide_data(idx) {
+        Ok(data) => Ok(data),
+        Err(err) => Err(PyErr::new::<pyo3::exceptions::PyRuntimeError, _>(
+            err.to_string(),
+        )),
+    }
+}
+
 /// A Python module for reverse geocoding in Japan
 #[pymodule]
 fn reversejp(_py: Python, m: &Bound<'_, PyModule>) -> PyResult<()> {
@@ -56,6 +66,7 @@ fn reversejp(_py: Python, m: &Bound<'_, PyModule>) -> PyResult<()> {
 
     m.add_class::<Property>()?;
     m.add_function(wrap_pyfunction!(find_properties, m)?)?;
+    m.add_function(wrap_pyfunction!(get_landslide_data, m)?)?;
 
     Ok(())
 }

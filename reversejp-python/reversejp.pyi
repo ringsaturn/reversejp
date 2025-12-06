@@ -26,3 +26,14 @@ def find_properties(longitude: float, latitude: float) -> List[Property]:
         A list of Property objects representing regions that contain the specified point
     """
     ...
+
+def get_landslide_data(idx: int) -> str:
+    """
+    Get landslide polygon data for the specified region index.
+
+    Args:
+        idx: The region index, [0, 9]
+    Returns:
+        A string representing the landslide polygon data
+    """
+    ...

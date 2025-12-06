@@ -30,7 +30,6 @@ pub fn find_properties(longitude: f64, latitude: f64) -> Result<JsValue, JsValue
         .map_err(|err| JsValue::from(Error::new(&err.to_string())))
 }
 
-
 #[wasm_bindgen]
 pub fn get_landslide_data_wasm(idx: usize) -> Result<JsValue, JsValue> {
     let result = get_landslide_data(idx);
