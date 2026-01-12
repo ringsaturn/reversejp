@@ -9,6 +9,7 @@ in, including code, name, and English name.
 ## Installation
 
 ### Rust [![Crates.io Version](https://img.shields.io/crates/v/reversejp)](https://crates.io/crates/reversejp)
+[![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2Fringsaturn%2Freversejp.svg?type=shield)](https://app.fossa.com/projects/git%2Bgithub.com%2Fringsaturn%2Freversejp?ref=badge_shield)
 
 ```bash
 cargo add reversejp
@@ -126,3 +127,6 @@ online previewed at
 MIT
 
 Data is sourced from the Japan Meteorological Agency website.
+
+
+[![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2Fringsaturn%2Freversejp.svg?type=large)](https://app.fossa.com/projects/git%2Bgithub.com%2Fringsaturn%2Freversejp?ref=badge_large)
