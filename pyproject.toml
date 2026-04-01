@@ -11,7 +11,7 @@ members = ["reversejp-python"]
 
 [dependency-groups]
 dev = [
-    "requests==2.33.0",
+    "requests==2.33.1",
     "ruff==0.14.0",
     "reversejp",
 ]
