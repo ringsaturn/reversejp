@@ -19,7 +19,7 @@ zip = "8.4.0"
 cities-json = "0.6.8"
 criterion = "0.8"
 lazy_static = "1.5.0"
-rand = "0.10.0"
+rand = "0.10.1"
 
 [[bench]]
 name = "jp_city_lookup"
