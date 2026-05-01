@@ -100,7 +100,7 @@ jobs:
         uses: actions/configure-pages@v6
 
       - name: Upload preview artifact
-        uses: actions/upload-pages-artifact@v4
+        uses: actions/upload-pages-artifact@v5
         with:
           path: reversejp-maps/public
 
@@ -178,7 +178,7 @@ jobs:
           echo "archive=${ARCHIVE_NAME}" >> "$GITHUB_OUTPUT"
 
       - name: Create GitHub Release and Upload Assets
-        uses: softprops/action-gh-release@v2
+        uses: softprops/action-gh-release@v3
         if: startsWith(github.ref, 'refs/tags/')
         with:
           files: |
