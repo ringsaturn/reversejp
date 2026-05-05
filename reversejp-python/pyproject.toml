@@ -19,7 +19,7 @@ dev = [
     "ruff==0.15.12",
     "citiespy==0.6.13",
     "maturin==1.13.1",
-    "pytest==8.4.2",
+    "pytest==9.0.3",
     "pytest-benchmark==5.1.0",
     "pytest-cov==7.0.0",
 ]
