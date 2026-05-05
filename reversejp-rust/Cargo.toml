@@ -10,16 +10,16 @@ repository.workspace = true
 readme.workspace = true
 
 [dependencies]
-geometry-rs = "0.3.3"
+geometry-rs = "0.4.1"
 serde = { version = "1.0.228", features = ["derive"] }
 serde_json = "1.0.149"
-zip = "8.4.0"
+zip = "8.6.0"
 
 [dev-dependencies]
 cities-json = "0.6.8"
 criterion = "0.8"
 lazy_static = "1.5.0"
-rand = "0.10.0"
+rand = "0.10.1"
 
 [[bench]]
 name = "jp_city_lookup"
