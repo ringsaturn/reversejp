@@ -157,7 +157,7 @@ impl ReverseJp {
                             .collect();
 
                         // Create geometry-rs polygon
-                        let polygon = Polygon::new(points, vec![]);
+                        let polygon = Polygon::new(points, vec![], None);
                         self.polygons.push((polygon, feature.properties.clone()));
                     }
                 }
@@ -303,6 +303,7 @@ mod tests {
                 },
             ],
             vec![],
+            None,
         );
 
         let p_out = Point {
