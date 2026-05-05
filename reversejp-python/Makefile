@@ -1,5 +1,9 @@
+
+install:
+	uv run maturin develop --release
+
 build:
 	uv build
 
-test:
-	uv run pytest tests/
+test: install
+	uv run --no-sync pytest tests/

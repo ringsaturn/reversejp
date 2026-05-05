@@ -16,9 +16,9 @@ build-backend = "maturin"
 
 [dependency-groups]
 dev = [
-    "ruff==0.14.0",
+    "ruff==0.15.12",
     "citiespy==0.6.13",
-    "maturin==1.9.6",
+    "maturin==1.13.1",
     "pytest==8.4.2",
     "pytest-benchmark==5.1.0",
     "pytest-cov==7.0.0",
