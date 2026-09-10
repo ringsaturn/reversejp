@@ -11,11 +11,11 @@
   },
   "dependencies": {
     "reversejp-wasm": "file:../reversejp-wasm/pkg",
-    "maplibre-gl": "^4.7.1",
+    "maplibre-gl": "^6.9.0",
     "@protomaps/basemaps": "^5.0.0"
   },
   "scripts": {
     "dev": "bun run --hot index.ts",
-    "build": "bun build src/app.ts --outdir public --target browser && cp node_modules/reversejp-wasm/reversejp_wasm_bg.wasm public/"
+    "build": "bun build src/app.ts --outdir public --target browser && cp node_modules/reversejp-wasm/reversejp_wasm_bg.wasm public/ && cp node_modules/maplibre-gl/dist/maplibre-gl-worker.mjs node_modules/maplibre-gl/dist/maplibre-gl-shared.mjs public/"
   }
 }

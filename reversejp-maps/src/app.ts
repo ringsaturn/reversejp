@@ -1,4 +1,4 @@
-import maplibregl from "maplibre-gl";
+import * as maplibregl from "maplibre-gl";
 import { layers, namedFlavor } from "@protomaps/basemaps";
 import init, {
   find_properties,
